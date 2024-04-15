@@ -1,0 +1,51 @@
+#!/bin/bash
+
+for(( i=1; i<=30; i++))
+do 
+
+	#refgenome
+	echo
+	echo "Step1 -- Generate refgenome"
+	echo
+	echo "ln -sf tau$i.fa refgenome"
+	ln -sf tau$i.fa refgenome
+	#qrygenome
+	echo
+	echo "Step2 -- Generate qrygenome"
+	echo
+	echo "ln -sf Ind$i.fa qrygenome"
+	ln -sf Ind$i.fa qrygenome
+	#whole genome alignment
+	echo "Step3 -- Generate alignment"
+	echo
+	echo "minimap2 -ax asm5 --eqx refgenome qrygenome > out$i.sam"
+	minimap2 -ax asm5 --eqx refgenome qrygenome > out$i.sam
+	#run SyRi
+	echo "Step4 -- Run SyRi"
+	echo
+	echo "syri -c out$i.sam -r refgenome -q qrygenome -k -F S"
+	syri -c out$i.sam -r refgenome -q qrygenome -k -F S
+	echo
+	#renaming o/p file
+	echo "Step5 -- Rename SyRi o/p file"
+	echo
+	echo "cp syri.out syri$i.out"
+	cp syri.out syri$i.out
+	#run plotsr
+	echo "Step6 -- Run plotsr"
+	echo
+	echo "plotsr --sr syri$i.out --genomes genomes$i.txt -o output$i.png"
+	plotsr --sr syri$i.out --genomes genomes$i.txt -o output$i.png
+	echo
+done
+echo "[End of test]"
+
+
+
+
+
+
+
+
+
+
