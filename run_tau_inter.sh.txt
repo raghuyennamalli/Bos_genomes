@@ -1,0 +1,19 @@
+#!/bin/bash
+
+for(( i=1; i<=30; i++))
+do 
+
+	#test indexing
+	echo
+	echo "Test1 -- Generate index files with a reference file"
+	echo
+	bin/bwt_index tau_intra/tau$i.fa tau_intra/tau$i
+	echo "bin/bwt_index tau_intra/tau$i.fa tau_intra/tau$i"
+	#test alignment
+	echo "Test2 -- Align two Bos chromosomes with 64 threads"
+	echo
+	bin/GSAlign -t 4 -i tau_intra/tau$i -q tau_intra/tau30.fa -o tau_intra/Output_tau_intra$i
+	echo "bin/GSAlign -t 64 -i tau_intra/tau$i -q tau_intra/Ind$i.fa -o tau_intra/Output_tau_intra$i"
+	echo
+done
+echo "[End of test]"
